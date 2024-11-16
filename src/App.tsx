@@ -1,23 +1,26 @@
-import Board from "./components/card";
+import { useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Toaster } from "react-hot-toast";
+import CreateTask from "./components/create-task";
+import ListTasks from "./components/list-tasks";
+import { Task } from "./types";
 
 const App = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    setTasks(JSON.parse(localStorage.getItem("tasks") || "[]"));
+  }, []);
+
   return (
-    <div
-      style={{ background: "#0079bf", maxWidth: "1440px" }}
-      className="w-screen relative pt-4 max-h-full h-screen"
-    >
-      <div className="w-11/12 mx-auto relative z-50">
-        <h1 className="text-2xl md:text-4xl text-blue-300 mb-6 font-bold text-center ">
-          Trello Clone
-        </h1>
-        <div className="flex lg:justify-between justify-center flex-wrap lg:flex-nowrap">
-          <Board title="Backlog" />
-          <Board title="TO DOs" />
-          <Board title="DOING" />
-          <Board title="DONE" />
-        </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="bg-slate-100 w-screen h-screen flex flex-col items-center justify-center pt-3 gap-16">
+        <CreateTask tasks={tasks} setTasks={setTasks} />
+        <ListTasks tasks={tasks} setTasks={setTasks} />
       </div>
-    </div>
+      <Toaster />
+    </DndProvider>
   );
 };
 export default App;
