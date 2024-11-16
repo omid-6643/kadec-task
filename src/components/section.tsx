@@ -11,11 +11,13 @@ const Section = ({
   setTasks,
   tasks,
   todo,
+  allTasks,
 }: {
   status: string;
   todo: Task[];
   inProgress: Task[];
   closed: Task[];
+  allTasks: Task[];
   setTasks: any;
 } & Tasks) => {
   let text, bg, tasksToMap;
@@ -26,6 +28,7 @@ const Section = ({
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
+    canDrop: (item: Task) => item.status !== "all",
   }));
 
   if (status === "todo") {
@@ -36,10 +39,14 @@ const Section = ({
     text = "In progress";
     bg = "bg-purple-500";
     tasksToMap = inProgress;
-  } else {
+  } else if (status === "closed") {
     text = "Closed";
     bg = "bg-green-500";
     tasksToMap = closed;
+  } else {
+    text = "All";
+    bg = "bg-orange-500";
+    tasksToMap = allTasks;
   }
 
   const addItemToSection = (id: string) => {
@@ -60,7 +67,7 @@ const Section = ({
   };
 
   return (
-    <div ref={drop} className={`w-64 ${isOver ? "bg-slate-200" : ""}`}>
+    <div ref={drop} className={`w-64 ${isOver ? "bg-slate-200" : ""} `}>
       <Header text={text} bg={bg} count={tasksToMap.length} />
       {tasksToMap.length > 0 &&
         tasksToMap.map((task) => {
