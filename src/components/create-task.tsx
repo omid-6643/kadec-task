@@ -46,7 +46,6 @@ const CreateTask = ({
           onChange={(e) =>
             setTask({ ...task, name: e.target.value, id: uuidv4() })
           }
-          //   defaultValue={task.name}
         />
       </Form.Item>
       <Form.Item label={null}>

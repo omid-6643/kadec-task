@@ -8,6 +8,7 @@ import { Task } from "./types";
 
 const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  
 
   useEffect(() => {
     setTasks(JSON.parse(localStorage.getItem("tasks") || "[]"));
